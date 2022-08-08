@@ -269,7 +269,6 @@ class JoomlaBrowser extends WebDriver
         $this->fillField(['id' => 'jform_db_name'], $this->config['database name']);
         $this->debug('I fill Database Prefix');
         $this->fillField(['id' => 'jform_db_prefix'], $this->config['database prefix']);
-        $this->debug('I scrollTo setupButton');
         $this->scrollTo(['id' => 'setupButton']);
         $this->debug('I click Install Joomla Button');
         $this->click(['id' => 'setupButton']);
@@ -1006,7 +1005,8 @@ class JoomlaBrowser extends WebDriver
         $this->checkForPhpNoticesOrWarnings();
 
         $this->debug("I click in the menu: $menu");
-        $this->click(['link' => $menu]);
+        // $this->click(['link' => $menu]);
+        $this->click(['xpath' => "//div[@id='sidebarmenu']//a[@aria-label='$menu']"]);
         $this->waitForText('Menus: Items', $this->config['timeout'], ['css' => 'H1']);
         $this->checkForPhpNoticesOrWarnings();
 
@@ -1017,32 +1017,31 @@ class JoomlaBrowser extends WebDriver
         $this->fillField(['id' => 'jform_title'], $menuTitle);
 
         $this->debug("Open the menu types iframe");
-        $this->click(['link' => "Select"]);
+        $this->click("Select");
         $this->waitForElement(['id' => 'menuTypeModal'], $this->config['timeout']);
         $this->wait(1);
         $this->switchToIFrame("Menu Item Type");
-
         $this->debug("Open the menu category: $menuCategory");
 
         // Open the category
         $this->wait(1);
-        $this->waitForElement(['link' => $menuCategory], $this->config['timeout']);
-        $this->click(['link' => $menuCategory]);
-
+        $this->waitForElement(['xpath' => "//button[contains(text()[normalize-space()], '$menuCategory')]"], $this->config['timeout']);
+        $this->click("$menuCategory");
         $this->debug("Choose the menu item type: $menuItem");
         $this->wait(1);
-        $this->waitForElement(['xpath' => "//a[contains(text()[normalize-space()], '$menuItem')]"], $this->config['timeout']);
-        $this->click(['xpath' => "//div[@id='collapseTypes']//a[contains(text()[normalize-space()], '$menuItem')]"]);
+
+        $this->waitForElement(['xpath' => "//a[./div[contains(text()[normalize-space()], '$menuItem')]]"], $this->config['timeout']);
+        $this->click(['xpath' => "//div[@id='collapseTypes']//a[./div[contains(text()[normalize-space()], '$menuItem')]]"]);
         $this->debug('I switch back to the main window');
         $this->switchToIFrame();
         $this->debug('I leave time to the iframe to close');
         $this->wait(2);
-        $this->selectOptionInChosen('Language', $language);
+        // $this->selectOptionInChosen('Language', $language);
         $this->waitForText('Menus: New Item', '30', ['css' => 'h1']);
         $this->debug('I save the menu');
         $this->click("Save");
 
-        $this->waitForText('Menu item successfully saved', $this->config['timeout'], ['id' => 'system-message-container']);
+        $this->waitForText('Menu item saved', $this->config['timeout'], ['id' => 'system-message-container']);
     }
 
     /**

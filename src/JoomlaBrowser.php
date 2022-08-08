@@ -1028,10 +1028,12 @@ class JoomlaBrowser extends WebDriver
         $this->waitForElement(['xpath' => "//button[contains(text()[normalize-space()], '$menuCategory')]"], $this->config['timeout']);
         $this->click("$menuCategory");
         $this->debug("Choose the menu item type: $menuItem");
+        $el = "//a[./div[contains(text()[normalize-space()], '$menuItem')]]";
+        $this->scrollTo(['xpath' => $el]);
         $this->wait(1);
+        $this->waitForElement(['xpath' => $el], $this->config['timeout']);
+        $this->click(['xpath' => '//div[@id="collapseTypes"]'.$el]);
 
-        $this->waitForElement(['xpath' => "//a[./div[contains(text()[normalize-space()], '$menuItem')]]"], $this->config['timeout']);
-        $this->click(['xpath' => "//div[@id='collapseTypes']//a[./div[contains(text()[normalize-space()], '$menuItem')]]"]);
         $this->debug('I switch back to the main window');
         $this->switchToIFrame();
         $this->debug('I leave time to the iframe to close');

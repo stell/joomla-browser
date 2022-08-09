@@ -291,7 +291,9 @@ class JoomlaBrowser extends WebDriver
         $this->debug('Joomla is now installed');
 
         // set default Language
+        $this->debug('set admin lang to: '.$defaultLanguage);
         $this->click('//input[@name="administratorlang"][@value="'.$defaultLanguage.'"]');
+        $this->debug('set frontend lang to: '.$defaultLanguage);
         $this->click('//input[@name="frontendlang"][@value="'.$defaultLanguage.'"]');
 
         $this->scrollTo(['css' => '.complete-installation']);

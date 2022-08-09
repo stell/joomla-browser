@@ -282,13 +282,20 @@ class JoomlaBrowser extends WebDriver
      *
      * @since   4.0.0
      */
-    public function installJoomlaRemovingInstallationFolder()
+    public function installJoomlaRemovingInstallationFolder($defaultLanguage = 'en-GB')
     {
         $this->installJoomla();
 
         $this->removeInstallationFolder();
 
         $this->debug('Joomla is now installed');
+
+        // set default Language
+        $this->click('//input[@name="administratorlang"][@value="'.$defaultLanguage.'"]');
+        $this->click('//input[@name="frontendlang"][@value="'.$defaultLanguage.'"]');
+
+        $this->scrollTo(['css' => '.complete-installation']);
+        $this->wait(1);
         $this->click('Open Administrator');
     }
 
@@ -304,7 +311,7 @@ class JoomlaBrowser extends WebDriver
      * @example : $this->installJoomlaMultilingualSite(['Spanish', 'French']);
      *
      */
-    public function installJoomlaMultilingualSite($languages = array())
+    public function installJoomlaMultilingualSite($languages = array(), $defaultLanguage = 'English (en-GB)')
     {
         if (!$languages) {
             // If no language is passed French will be installed by default
@@ -320,7 +327,7 @@ class JoomlaBrowser extends WebDriver
         foreach ($languages as $language) {
             $this->debug('I mark the checkbox of the language: ' . $language);
             $this->scrollTo(['xpath' => "//label[contains(text()[normalize-space()], '$language')]"]);
-            $this->wait(.5);
+            $this->wait(1);
             $this->click(['xpath' => "//label[contains(text()[normalize-space()], '$language')]"]);
         }
 
@@ -328,8 +335,8 @@ class JoomlaBrowser extends WebDriver
         $this->wait(.5);
         $this->click(['id' => 'installLanguagesButton']);
         $this->waitForText('Set default language', $this->config['timeout'], ['id' => 'defaultLanguagesButton']);
-        $this->seeOptionIsSelected('input[name=administratorlang]', 'English (en-GB)');
-        $this->seeOptionIsSelected('input[name=frontendlang]', 'English (en-GB)');
+        $this->seeOptionIsSelected('input[name=administratorlang]', $defaultLanguage);
+        $this->seeOptionIsSelected('input[name=frontendlang]', $defaultLanguage);
         $this->scrollTo('#defaultLanguagesButton');
         $this->wait(.5);
         $this->click('#defaultLanguagesButton');

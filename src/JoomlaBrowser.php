@@ -541,7 +541,7 @@ class JoomlaBrowser extends WebDriver
         $label = $this->findField(['xpath' => "//label[contains(normalize-space(string(.)), '$label')]"]);
         $radioId = $label->getAttribute('for');
 
-        $this->click("//fieldset[@id='$radioId']/label[contains(normalize-space(string(.)), '$option')]");
+        $this->click("//fieldset[@id='$radioId']//label[contains(normalize-space(string(.)), '$option')]");
     }
 
     /**

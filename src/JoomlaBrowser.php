@@ -184,9 +184,10 @@ class JoomlaBrowser extends WebDriver
         // @todo: update login button in joomla login screen to make this xPath more friendly
         $this->debug('I click Login button');
         $this->click($this->locator->loginButton);
-        $this->debug('I wait to see Frontend Member Profile Form with the Logout button in the module');
 
-        $this->waitForElement($this->locator->frontEndLoginSuccess, $this->config['timeout']);
+        // @todo: to specific. find alternative
+        // $this->debug('I wait to see Frontend Member Profile Form with the Logout button in the module');
+        // $this->waitForElement($this->locator->frontEndLoginSuccess, $this->config['timeout']);
     }
 
     /**
@@ -282,27 +283,11 @@ class JoomlaBrowser extends WebDriver
      *
      * @since   4.0.0
      */
-    public function installJoomlaRemovingInstallationFolder($defaultLanguage = 'en-GB')
+    public function installJoomlaRemovingInstallationFolder()
     {
         $this->installJoomla();
-
         $this->removeInstallationFolder();
-
         $this->debug('Joomla is now installed');
-
-        // set default Language
-        // $this->debug('set admin lang to: '.$defaultLanguage);
-        // $this->click('//input[@name="administratorlang"][@value="'.$defaultLanguage.'"]');
-        // $this->debug('set frontend lang to: '.$defaultLanguage);
-        // $this->click('//input[@name="frontendlang"][@value="'.$defaultLanguage.'"]');
-
-        // $this->scrollTo('#defaultLanguagesButton');
-        // $this->wait(1);
-        // $this->click('#defaultLanguagesButton');
-        // $this->wait(1);
-        // $this->scrollTo(['id' => 'system-message-container']);
-        // $this->waitForText('Joomla has set de-DE as your default ADMINISTRATOR language.', $this->config['timeout']);
-
         $this->scrollTo(['css' => '.complete-installation']);
         $this->wait(1);
         $this->click('Open Administrator');

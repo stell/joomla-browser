@@ -158,13 +158,14 @@ class JoomlaBrowser extends WebDriver
      *
      * @param   string|null  $user      Optional username. If not passed the one in acceptance.suite.yml will be used
      * @param   string|null  $password  Optional password. If not passed the one in acceptance.suite.yml will be used
+     * @param   bool         $useSnapshot  Whether or not you want to reuse the session from previous login. Enabled by default.
      *
      * @return  void
      *
      * @since   3.0.0
      * @throws Exception
      */
-    public function doFrontEndLogin($user = null, $password = null)
+    public function doFrontEndLogin($user = null, $password = null, $useSnapshot = true)
     {
         if (is_null($user)) {
             $user = $this->config['username'];
@@ -172,6 +173,10 @@ class JoomlaBrowser extends WebDriver
 
         if (is_null($password)) {
             $password = $this->config['password'];
+        }
+
+        if ($useSnapshot && $this->loadSessionSnapshot($user)) {
+            return;
         }
 
         $this->debug('I open Joomla Frontend Login Page');
@@ -184,6 +189,10 @@ class JoomlaBrowser extends WebDriver
         // @todo: update login button in joomla login screen to make this xPath more friendly
         $this->debug('I click Login button');
         $this->click($this->locator->loginButton);
+
+        if ($useSnapshot) {
+            $this->saveSessionSnapshot($user);
+        }
 
         // @todo: to specific. find alternative
         // $this->debug('I wait to see Frontend Member Profile Form with the Logout button in the module');

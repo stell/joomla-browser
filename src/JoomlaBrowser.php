@@ -1042,6 +1042,9 @@ class JoomlaBrowser extends WebDriver
         $el = "//a[./div[contains(text()[normalize-space()], '$menuItem')]]";
         $this->scrollTo(['xpath' => $el]);
         $this->wait(1);
+        $this->scrollTo(['xpath' => $el]);  // silly fix for reaching lowest items in long lists
+        $this->wait(1);
+        // $this->executeJS("document.evaluate(\"$el\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView();");
         $this->waitForElement(['xpath' => $el], $this->config['timeout']);
         $this->click(['xpath' => '//div[@id="collapseTypes"]'.$el]);
 

@@ -572,12 +572,17 @@ class JoomlaBrowser extends WebDriver
     public function selectFancyOption($label, $option)
     {
         $select = $this->findField(['xpath' => "//div[contains(@class, 'control-group') and not(contains(@class, 'hidden'))]//label[contains(normalize-space(string(.)), '$label')]"]);
-        // $select = ['xpath' => "//div[contains(@class, 'control-group') and not(contains(@class, 'hidden'))]//label[contains(normalize-space(string(.)), '$label')]"];
         $selectID = $select->getAttribute('for');
-        $input = "//select[@id='$selectID']/following-sibling::div/following-sibling::input";
-        $this->click(["xpath" => $input]);
-        $this->fillField(["xpath" => $input], $option);
-        $this->pressKey(["xpath" => $input], \Facebook\WebDriver\WebDriverKeys::ENTER);
+        // $parent = "//select[@id='$selectID']//parent";  // .choices__inner
+        // $input = "//select[@id='$selectID']/following-sibling::div/following-sibling::input";
+        $parent = "//select[@id='$selectID']/ancestor::div[@class='choices'][1]";  // .choices
+        $this->click(["xpath" => $parent]);
+        $field  = "//select[@id='$selectID']/ancestor::div[contains(@class, 'is-open')][1]//div[contains(@class, 'choices__item--selectable') and @data-value='".$option."']";
+        $this->click(["xpath" => $field]);
+        // $this->wait(1);
+        // $input  = "//select[@id='$selectID']/ancestor::div[@class='choices'][1]//input";
+        // $this->fillField(["xpath" => $input], $option);
+        // $this->pressKey(["xpath" => $input], \Facebook\WebDriver\WebDriverKeys::ENTER);
     }
 
     /**

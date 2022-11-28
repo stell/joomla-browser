@@ -588,6 +588,26 @@ class JoomlaBrowser extends WebDriver
     }
 
     /**
+     * Selects multiple options in a Choices Selector based on its label
+     *
+     * @param   string  $label   The text in the <label> with for attribute that links to the <select> element
+     * @param   string  $option  The text in the <option> to be selected in the chosen selector
+     *
+     * @return  void
+     *
+     * @since    4.0.0
+     */
+    public function selectMultiFancyOption($label, $option)
+    {
+        $select = $this->findField(['xpath' => "//div[contains(@class, 'control-group') and not(contains(@class, 'hidden'))]//label[contains(normalize-space(string(.)), '$label')]"]);
+        $selectID = $select->getAttribute('for');
+        $input = "//select[@id='$selectID']/following-sibling::div/following-sibling::input";
+        $this->click(["xpath" => $input]);
+        $this->fillField(["xpath" => $input], $option);
+        $this->pressKey(["xpath" => $input], \Facebook\WebDriver\WebDriverKeys::ENTER);
+    }
+
+    /**
      * Selects an option in a Chosen Selector based on its label
      *
      * @param   string  $label   The text in the <label> with for attribute that links to the <select> element

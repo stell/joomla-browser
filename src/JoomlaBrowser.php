@@ -597,6 +597,7 @@ class JoomlaBrowser extends WebDriver
         $selectID = $select->getAttribute('for');
         $input = "//select[@id='$selectID']/following-sibling::div/following-sibling::input";
         $this->click(["xpath" => $input]);
+        $this->wait(1);
         $this->fillField(["xpath" => $input], $option);
         $this->pressKey(["xpath" => $input], \Facebook\WebDriver\WebDriverKeys::ENTER);
     }

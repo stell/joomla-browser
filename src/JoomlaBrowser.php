@@ -600,6 +600,7 @@ class JoomlaBrowser extends WebDriver
         $this->wait(1);
         $this->fillField(["xpath" => $input], $option);
         $this->pressKey(["xpath" => $input], \Facebook\WebDriver\WebDriverKeys::ENTER);
+        $this->wait(1);
     }
 
     /**

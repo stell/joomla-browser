@@ -42,7 +42,7 @@ class JoomlaBrowser extends WebDriver
         'database prefix',
         'admin email',
         'language',
-        'timeout'
+        'timeout',
     );
 
     /**
@@ -115,11 +115,11 @@ class JoomlaBrowser extends WebDriver
      */
     public function doAdministratorLogin($user = null, $password = null, $useSnapshot = true)
     {
-        if (is_null($user)) {
+        if (\is_null($user)) {
             $user = $this->config['username'];
         }
 
-        if (is_null($password)) {
+        if (\is_null($password)) {
             $password = $this->config['password'];
         }
 
@@ -167,11 +167,11 @@ class JoomlaBrowser extends WebDriver
      */
     public function doFrontEndLogin($user = null, $password = null, $useSnapshot = true)
     {
-        if (is_null($user)) {
+        if (\is_null($user)) {
             $user = $this->config['username'];
         }
 
-        if (is_null($password)) {
+        if (\is_null($password)) {
             $password = $this->config['password'];
         }
 
@@ -312,7 +312,6 @@ class JoomlaBrowser extends WebDriver
      * @since   3.0.0
      * @throws Exception
      * @example : $this->installJoomlaMultilingualSite(['Spanish', 'French']);
-     *
      */
     public function installJoomlaMultilingualSite($languages = array(), $defaultLanguage = 'English (en-GB)')
     {
@@ -363,7 +362,6 @@ class JoomlaBrowser extends WebDriver
      *
      * @since   4.0.0
      * @throws Exception
-     *
      */
     protected function removeInstallationFolder()
     {
@@ -558,7 +556,6 @@ class JoomlaBrowser extends WebDriver
         }
     }
 
-
     /**
      * Selects an option in a Choices Selector based on its label
      *
@@ -576,7 +573,7 @@ class JoomlaBrowser extends WebDriver
         $parent = "//select[@id='$selectID']/ancestor::div[@class='choices'][1]";
         $this->click(["xpath" => $parent]);
         $this->wait(1);
-        $field  = "//select[@id='$selectID']/ancestor::div[contains(@class, 'is-open')][1]//div[contains(@class, 'choices__item--selectable') and @data-value='".$option."']";
+        $field  = "//select[@id='$selectID']/ancestor::div[contains(@class, 'is-open')][1]//div[contains(@class, 'choices__item--selectable') and @data-value='" . $option . "']";
         $this->click(["xpath" => $field]);
         $this->wait(1);
     }
@@ -808,6 +805,7 @@ class JoomlaBrowser extends WebDriver
             $this->debug("Searching for $name");
             $this->fillField(['id' => "filter_search"], $name);
             $this->click(['xpath' => "//button[@aria-label='Search']"]);
+            $this->waitForElement(['class' => 'page-title']);
 
             return;
         }
@@ -1069,7 +1067,7 @@ class JoomlaBrowser extends WebDriver
         $this->wait(1);
         // $this->executeJS("document.evaluate(\"$el\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollIntoView();");
         $this->waitForElement(['xpath' => $el], $this->config['timeout']);
-        $this->click(['xpath' => '//div[@id="collapseTypes"]'.$el]);
+        $this->click(['xpath' => '//div[@id="collapseTypes"]' . $el]);
 
         $this->debug('I switch back to the main window');
         $this->switchToIFrame();
@@ -1102,7 +1100,7 @@ class JoomlaBrowser extends WebDriver
             "select access"		=> "filter_access",
             "select language" 	=> "filter_language",
             "select tag"		=> "filter_tag",
-            "select max levels"	=> "filter_level"
+            "select max levels"	=> "filter_level",
         );
 
         $this->click(['xpath' => "//button[@data-original-title='Filter the list items.']"]);
@@ -1242,7 +1240,7 @@ class JoomlaBrowser extends WebDriver
             $this->click($this->locator->adminManageUsersUserGroupAssignmentTab);
             $this->uncheckOption('Registered');
 
-            if (!is_array($userGroups)) {
+            if (!\is_array($userGroups)) {
                 $userGroups = [$userGroups];
             }
 

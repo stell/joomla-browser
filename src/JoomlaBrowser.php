@@ -557,6 +557,33 @@ class JoomlaBrowser extends WebDriver
     }
 
     /**
+     * Selects an option in a Choices Selector based on its ID
+     *
+     * @param   string  $label   The text in the <label> with for attribute that links to the <select> element
+     * @param   string  $option  The text in the <option> to be selected in the chosen selector
+     *
+     * @return  void
+     *
+     * @since    4.0.0
+     */
+    public function selectFancyOptionByID($ID, $option)
+    {
+        $this->click('//select[@id="' . $ID . '"]/ancestor::div[@class="choices"]');
+        $this->wait(1);
+        $this->click('//select[@id="' . $ID . '"]/ancestor::div[contains(@class, "is-open")][1]//div[contains(@class, "choices__item--selectable") and @data-value="' . $option . '"]');
+        $this->wait(1);
+
+        // $select = $this->findField(['xpath' => "//div[contains(@class, 'control-group') and not(contains(@class, 'hidden'))]//label[contains(normalize-space(string(.)), '$label')]"]);
+        // $selectID = $select->getAttribute('for');
+        // $parent = "//select[@id='$selectID']/ancestor::div[@class='choices'][1]";
+        // $this->click(["xpath" => $parent]);
+        // $this->wait(1);
+        // $field  = "//select[@id='$selectID']/ancestor::div[contains(@class, 'is-open')][1]//div[contains(@class, 'choices__item--selectable') and @data-value='" . $option . "']";
+        // $this->click(["xpath" => $field]);
+        // $this->wait(1);
+    }
+
+    /**
      * Selects an option in a Choices Selector based on its label
      *
      * @param   string  $label   The text in the <label> with for attribute that links to the <select> element
